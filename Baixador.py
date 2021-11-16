@@ -4,6 +4,7 @@ import tkinter.messagebox as tkMessageBox
 import os
 import tkinter.filedialog as fdlg
 from tkinter import ttk
+import youtube_dl
 
 
 
@@ -16,7 +17,27 @@ def saindo():
 def limpar():
 	txtLink.delete(0,"end")
 
-def baixardor():
+def baixadormp3():
+	progress1['value']+=10
+	tela.update()
+
+	video_url = txtLink.get()
+	video_info = youtube_dl.YoutubeDL().extract_info(
+	url = video_url,download=False
+	)
+	filename = f"{video_info['title']}.mp3"
+	options={
+		'format':'bestaudio/best',
+		'keepvideo':False,
+		'outtmpl':filename,
+	}
+
+	with youtube_dl.YoutubeDL(options) as ydl:
+		ydl.download([video_info['webpage_url']])
+
+	tkMessageBox.showinfo("Download complete... {}".format(filename))
+
+def baixadormp4():
 	progress1['value']+=10
 	tela.update()
 	try:
@@ -62,13 +83,17 @@ def baixardor():
 		progress1.stop()
 		tkMessageBox.showinfo("Erro", message= "Não foi possível finalizar!!")
 
-def progresso():
+def progresso(escolhido):
 	site = txtLink.get()
 	if site == "":
 		tkMessageBox.showinfo("Erro", message= "Favor preencher o site!!")
 	else:
-		progress1.start(10)
-		baixardor()
+		if escolhido =="mp4":
+			progress1.start(10)
+			baixadormp4()
+		else:
+			progress1.start(10)
+			baixadormp3()
 
 
 tela = Tk()
@@ -85,14 +110,17 @@ txtLink.place(relx=0.3, rely=0.2)
 
 
 
-btinicio = Button(tela, text = " Iniciar  ",bg="DarkOrange", font=('arial',14,'bold'),command=progresso)
-btinicio.place(relx = 0.2, rely = 0.5)
+btinicio = Button(tela, text = " Baixar MP4  ",bg="DarkOrange", font=('arial',14,'bold'),command=lambda: progresso('mp4'))
+btinicio.place(relx = 0.1, rely = 0.5)
 
-btinicio = Button(tela, text = " Limpar  ",bg="DarkOrange", font=('arial',14,'bold'),command=limpar)
-btinicio.place(relx = 0.4, rely = 0.5)
+btimusica = Button(tela, text = " Baixar MP3  ",bg="DarkOrange", font=('arial',14,'bold'),command=lambda: progresso('mp3'))
+btimusica.place(relx = 0.3, rely = 0.5)
+
+btilimpa = Button(tela, text = " Limpar  ",bg="DarkOrange", font=('arial',14,'bold'),command=limpar)
+btilimpa.place(relx = 0.5, rely = 0.5)
 
 btsair = Button(tela, text = "   Sair   ",bg="DarkOrange", font=('arial',14,'bold'),command=saindo)
-btsair.place(relx = 0.6, rely = 0.5)
+btsair.place(relx = 0.7, rely = 0.5)
 
 #importante para progressbar
 s = ttk.Style() 
