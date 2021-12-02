@@ -98,7 +98,7 @@ tela['bg'] = "OrangeRed"
 tela.iconphoto(True, PhotoImage(file='./arquivos/foto.png'))
 image=PhotoImage(file='./arquivos/foto2.png')
 
-campointervalo = tk.Label(tela, width=800,height=500,image=image, bd=3,fg='black',bg = 'white', font=('arial',10,'bold'))
+campointervalo = Label(tela, width=800,height=500,image=image, bd=3,fg='black',bg = 'black', font=('arial',10,'bold'))
 campointervalo.grid(rowspan=16,columnspan =5)
 
 lblLink = Label(tela, bg="DarkOrange", text = "Site: ",font=('arial',14,'bold'))
@@ -110,16 +110,16 @@ txtLink.place(relx=0.3, rely=0.2)
 
 
 btinicio = Button(tela, text = " Baixar MP4  ",bg="DarkOrange", font=('arial',14,'bold'),command=lambda: progresso('mp4'))
-btinicio.place(relx = 0.1, rely = 0.5)
+btinicio.place(relx = 0.1, rely = 0.8)
 
 btimusica = Button(tela, text = " Baixar MP3  ",bg="DarkOrange", font=('arial',14,'bold'),command=lambda: progresso('mp3'))
-btimusica.place(relx = 0.3, rely = 0.5)
+btimusica.place(relx = 0.3, rely = 0.8)
 
 btilimpa = Button(tela, text = " Limpar  ",bg="DarkOrange", font=('arial',14,'bold'),command=limpar)
-btilimpa.place(relx = 0.5, rely = 0.5)
+btilimpa.place(relx = 0.5, rely = 0.8)
 
 btsair = Button(tela, text = "   Sair   ",bg="DarkOrange", font=('arial',14,'bold'),command=saindo)
-btsair.place(relx = 0.7, rely = 0.5)
+btsair.place(relx = 0.7, rely = 0.8)
 
 #importante para progressbar
 s = ttk.Style() 
