@@ -43,12 +43,10 @@ def baixadormp3():
 	tkMessageBox.showinfo("Download complete... {}".format(filename))
 
 def baixadormp4():
+	site = txtLink.get()
 	progress1['value']+=10
 	tela.update()
 	try:
-		site = txtLink.get()
-		
-
 		#salvar = r"C:\Users\Marciel\Videos"
 		progress1['value']+=10
 		tela.update()
@@ -85,7 +83,7 @@ def baixadormp4():
 
 def progresso(escolhido):
 	site = txtLink.get()
-	if site == "":
+	if site == "" or site == '**Site obrigatório!' or site == 'Site':
 		tkMessageBox.showinfo("Erro", message= "Favor preencher o site!!")
 	else:
 		if escolhido =="mp4":
@@ -107,7 +105,7 @@ image=PhotoImage(file='./arquivos/foto2.png')
 campointervalo = Label(tela, width=800,height=500,image=image, bd=3,fg='black',bg = 'black', font=('arial',10,'bold'))
 campointervalo.grid(rowspan=10,columnspan =5)
 
-lblLink = Label(tela, bg="DarkOrange", text = "Site: ",font=('arial',14,'bold'))
+lblLink = Label(tela, bg="DarkOrange", text = "**Site: ",font=('arial',14,'bold'))
 lblLink.place(relx = 0.2, rely = 0.2)
 
 txtLink = Entry(tela,justify='center',fg='red', font=('arial',14, 'bold'))
