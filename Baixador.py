@@ -95,7 +95,7 @@ def progresso(escolhido):
 
 
 tela = Tk()
-tela.title("Download De Videos")
+tela.title("Download De Videos MP4 e MP3")
 tela.geometry("800x500+400+0")
 tela['bg'] = "OrangeRed"
 tela.iconphoto(True, PhotoImage(file='./arquivos/foto.png'))
