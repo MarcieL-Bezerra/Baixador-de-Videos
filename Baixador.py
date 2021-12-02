@@ -57,12 +57,7 @@ def baixadormp4():
 		progress1['value']+=10
 		tela.update()
 
-		'''print("Titulo : ", tube.title)
-		print("Numero de views : ", tube.views)
-		print("tamanho : ", tube.length)
-		print("avaliação : ", tube.rating)'''
-
-
+		
 		tubes = tube.streams.get_highest_resolution()
 		progress1['value']+=10
 		tela.update()
@@ -139,7 +134,7 @@ btsair.place(relx = 0.7, rely = 0.8)
 #importante para progressbar
 s = ttk.Style() 
 s.theme_use('default') 
-s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='DarkSeaGreen3', background='white')
+s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='red', background='white')
 
 progress1 =ttk.Progressbar(tela, orient=VERTICAL, length=450, style="SKyBlue1.Horizontal.TProgressbar",mode='determinate')
 progress1.place(relx=0.005, rely = 0)
