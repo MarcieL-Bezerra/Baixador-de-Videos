@@ -52,12 +52,7 @@ def baixadormp4():
 		progress1['value']+=10
 		tela.update()
 
-		'''print("Titulo : ", tube.title)
-		print("Numero de views : ", tube.views)
-		print("tamanho : ", tube.length)
-		print("avaliação : ", tube.rating)'''
-
-
+		
 		tubes = tube.streams.get_highest_resolution()
 		progress1['value']+=10
 		tela.update()
@@ -101,6 +96,10 @@ tela.title("Download De Videos")
 tela.geometry("800x500+400+0")
 tela['bg'] = "OrangeRed"
 tela.iconphoto(True, PhotoImage(file='./arquivos/foto.png'))
+image=PhotoImage(file='./arquivos/foto2.png')
+
+campointervalo = tk.Label(tela, width=800,height=500,image=image, bd=3,fg='black',bg = 'white', font=('arial',10,'bold'))
+campointervalo.grid(rowspan=16,columnspan =5)
 
 lblLink = Label(tela, bg="DarkOrange", text = "Site: ",font=('arial',14,'bold'))
 lblLink.place(relx = 0.2, rely = 0.2)
