@@ -1,4 +1,6 @@
+from logging import error
 from pytube import YouTube
+import youtube_dl
 from tkinter import *
 import tkinter.messagebox as tkMessageBox
 import os
@@ -21,29 +23,54 @@ def saindo():
 		pass
 def limpar():
 	txtLink.delete(0,"end")
+	progress1.stop()
 
 def baixadormp3():
 	progress1['value']+=10
 	tela.update()
-
 	video_url = txtLink.get()
-	video_info = youtube_dl.YoutubeDL().extract_info(
-	url = video_url,download=False
-	)
-	filename = f"{video_info['title']}.mp3"
-	options={
-		'format':'bestaudio/best',
-		'keepvideo':False,
-		'outtmpl':filename,
-	}
+	txtLink['state'] = DISABLED
+	
+	try:
+		
+		video_info = youtube_dl.YoutubeDL().extract_info(
+		url = video_url,download=False
+		)
+		filename = f"{video_info['title']}.mp3"
+		options={
+			'format':'bestaudio/best',
+			'keepvideo':False,
+			'outtmpl':filename,
+		}
+		tkMessageBox.showinfo("Selecionar Pasta", message= "Selecione Pasta para salvar!")
 
-	with youtube_dl.YoutubeDL(options) as ydl:
-		ydl.download([video_info['webpage_url']])
+		#aqui seleciona a pasta a ser colocada o novo arquivo
+		opcoes = {}                # as opções são definidas em um dicionário
+		opcoes['initialdir'] = ''    # será o diretório atual
+		opcoes['parent'] = tela
+		opcoes['title'] = 'Escolha a pasta para salvar'
+		caminhosalvar = fdlg.askdirectory(**opcoes)
 
-	tkMessageBox.showinfo("Download complete... {}".format(filename))
+		progress1['value']+=10
+		tela.update()
+		assert caminhosalvar != "", 'nenhum dado para notas'
+		
+		os.chdir(caminhosalvar)
+		
+		with youtube_dl.YoutubeDL(options) as ydl:
+			ydl.download([video_url])
 
+		txtLink['state'] = NORMAL
+		tkMessageBox.showinfo("Download complete", message= "Finalizado verifique em : " + str(caminhosalvar))
+		limpar()
+	except:
+		progress1.stop()
+		txtLink['state'] = NORMAL
+		tkMessageBox.showinfo("Erro", message= "Não foi possível finalizar!!")
+		
 def baixadormp4():
 	site = txtLink.get()
+	txtLink['state'] = DISABLED
 	progress1['value']+=10
 	tela.update()
 	try:
@@ -71,15 +98,18 @@ def baixadormp4():
 
 		progress1['value']+=10
 		tela.update()
-
+		assert caminhosalvar != "", 'nenhum dado para notas'
+		
 		tubes.download(caminhosalvar)
-		progress1.stop()
+		txtLink['state'] = NORMAL
 		tkMessageBox.showinfo("Finalzado", message= "Finalizado verifique em : " + str(caminhosalvar))
 		limpar()
 
 	except:
 		progress1.stop()
+		txtLink['state'] = NORMAL
 		tkMessageBox.showinfo("Erro", message= "Não foi possível finalizar!!")
+		
 
 def progresso(escolhido):
 	site = txtLink.get()
@@ -127,12 +157,12 @@ btilimpa = Button(tela, text = " Limpar  ",bg="DarkOrange", font=('arial',14,'bo
 btilimpa.place(relx = 0.5, rely = 0.8)
 
 btsair = Button(tela, text = "   Sair   ",bg="DarkOrange", font=('arial',14,'bold'),command=saindo)
-btsair.place(relx = 0.7, rely = 0.8)
+btsair.place(relx = 0.65, rely = 0.8)
 
 #importante para progressbar
 s = ttk.Style() 
 s.theme_use('default') 
-s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='red', background='white')
+s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='red', background='red')
 
 progress1 =ttk.Progressbar(tela, orient=VERTICAL, length=450, style="SKyBlue1.Horizontal.TProgressbar",mode='determinate')
 progress1.place(relx=0.005, rely = 0)
