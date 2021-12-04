@@ -4,10 +4,15 @@ import tkinter.messagebox as tkMessageBox
 import os
 import tkinter.filedialog as fdlg
 from tkinter import ttk
-import youtube_dl
 
+def selecionado(event,textnome):
+    textnome.delete(0,'end')
+    textnome.config(fg='black')
 
-
+def deselecionado(event,textnome):
+    if textnome.get()=="":
+        textnome.insert(0,'**Site obrigatório!')
+        textnome.config(fg='red')
 def saindo():
 	result = tkMessageBox.askquestion("", "Confirma a saída?", icon='question')
 	if result=='yes':
@@ -38,12 +43,10 @@ def baixadormp3():
 	tkMessageBox.showinfo("Download complete... {}".format(filename))
 
 def baixadormp4():
+	site = txtLink.get()
 	progress1['value']+=10
 	tela.update()
 	try:
-		site = txtLink.get()
-		
-
 		#salvar = r"C:\Users\Marciel\Videos"
 		progress1['value']+=10
 		tela.update()
@@ -80,7 +83,7 @@ def baixadormp4():
 
 def progresso(escolhido):
 	site = txtLink.get()
-	if site == "":
+	if site == "" or site == '**Site obrigatório!' or site == 'Site':
 		tkMessageBox.showinfo("Erro", message= "Favor preencher o site!!")
 	else:
 		if escolhido =="mp4":
@@ -92,20 +95,25 @@ def progresso(escolhido):
 
 
 tela = Tk()
-tela.title("Download De Videos")
+tela.title("Download De Videos MP4 e MP3")
 tela.geometry("800x500+400+0")
 tela['bg'] = "OrangeRed"
 tela.iconphoto(True, PhotoImage(file='./arquivos/foto.png'))
+
 image=PhotoImage(file='./arquivos/foto2.png')
 
 campointervalo = Label(tela, width=800,height=500,image=image, bd=3,fg='black',bg = 'black', font=('arial',10,'bold'))
-campointervalo.grid(rowspan=16,columnspan =5)
+campointervalo.grid(rowspan=10,columnspan =5)
 
-lblLink = Label(tela, bg="DarkOrange", text = "Site: ",font=('arial',14,'bold'))
+lblLink = Label(tela, bg="DarkOrange", text = "**Site: ",font=('arial',14,'bold'))
 lblLink.place(relx = 0.2, rely = 0.2)
 
-txtLink = Entry(tela, font=('arial',14, 'bold'))
+txtLink = Entry(tela,justify='center',fg='red', font=('arial',14, 'bold'))
 txtLink.place(relx=0.3, rely=0.2)
+txtLink.insert(0,'Site')
+txtLink.bind('<FocusIn>', lambda event=txtLink, btn=txtLink: selecionado(event,btn))
+txtLink.bind('<FocusOut>', lambda event=txtLink, btn=txtLink: deselecionado(event,btn))
+
 
 
 
@@ -124,7 +132,7 @@ btsair.place(relx = 0.7, rely = 0.8)
 #importante para progressbar
 s = ttk.Style() 
 s.theme_use('default') 
-s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='DarkSeaGreen3', background='white')
+s.configure("SKyBlue1.Horizontal.TProgressbar", foreground='red', background='white')
 
 progress1 =ttk.Progressbar(tela, orient=VERTICAL, length=450, style="SKyBlue1.Horizontal.TProgressbar",mode='determinate')
 progress1.place(relx=0.005, rely = 0)
